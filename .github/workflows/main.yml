@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-  
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -25,9 +25,13 @@ jobs:
           username: dhhcker
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Prepare
+        id: prep
+        run: echo ::set-output name=tag::${{ matrix.platform | replace('/', '-') }}
+      -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: dhhcker/alpine-docker-nginx:latest-${{ matrix.platform }}
+          tags: dhhcker/alpine-docker-nginx:latest-${{ steps.prep.outputs.tag }}
           platforms: ${{ matrix.platform }}
