@@ -1,6 +1,8 @@
 FROM alpine:latest
 
-RUN apk add nginx \
+RUN apk update \
+&& apk upgrade \
+&& apk add nginx \
 && touch /var/www/index.html
 
 ADD nginx.conf /etc/nginx/nginx.conf
